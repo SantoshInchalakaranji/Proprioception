@@ -41,10 +41,11 @@
 
 
         <TextView
+            android:id="@+id/toolbar_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:text="Record"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="18sp"
             android:fontFamily="@font/segeo_bold"
@@ -82,7 +83,7 @@
                 android:fontFamily="@font/segeo_bold"
                 android:text="Joint type"
 
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/custom_toolbar" />
@@ -96,7 +97,7 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="16dp"
-
+                app:singleSelection="true"
             >
 
 
@@ -109,11 +110,25 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/expandable_card" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="?attr/colorPrimaryContainer"
+        android:layout_marginBottom="16dp"
+
+        app:tint="@color/white"
+        app:shapeAppearance="@style/Widget.MaterialComponents.CircularProgressIndicator"
+        android:src="@drawable/add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,13 +1,18 @@
 package com.prplmnstr.proprioception.viewmodel
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prplmnstr.proprioception.model.Patient
+import com.prplmnstr.proprioception.model.Record
 import com.prplmnstr.proprioception.repository.PatientRepository
 import com.prplmnstr.proprioception.utils.Event
+import com.prplmnstr.proprioception.utils.bluetooth.BluetoothService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val  repository: PatientRepository
+    private val  repository: PatientRepository,
+    private val bluetoothService: BluetoothService
 ):ViewModel() {
 
     private val statusMessage = MutableLiveData<Event<String>>()
@@ -30,17 +36,31 @@ class MainViewModel @Inject constructor(
         "", 0, "",""
     )
 
+    val sampleRecord = Record(null, -1,"","",
+        0,0,"")
+
     var currentPatient :Patient
+    var currentRecord :Record
+
+
 
     val patients : LiveData<List<Patient>>
         get() = repository.patients
 
+    val yValue: LiveData<Double> = bluetoothService.yValue
+
+    val connectionState = bluetoothService.connectionState
+
     init {
+
         currentPatient = samplePatient.copy()
+        currentRecord = sampleRecord.copy()
         Log.e("TAG", "mainview model: created", )
     }
 
     fun resetCurrentPatient() {currentPatient = samplePatient.copy()}
+    fun resetCurrentRecord() {currentRecord = sampleRecord.copy()}
+
 
     fun addPatient(patient: Patient) = viewModelScope.launch(Dispatchers.IO) {
 
@@ -61,7 +81,28 @@ class MainViewModel @Inject constructor(
     }
 
 
+    fun addRecord(record: Record) = viewModelScope.launch(Dispatchers.IO) {
+        repository.addRecord(record)
+        resetCurrentRecord()
+    }
+
+    fun deleteRecord(record: Record) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteRecord(record)
+        resetCurrentRecord()
+    }
+
+    fun getPatientRecord(patientId: Int) =
+      repository.getPatientRecord(patientId)
 
 
+    fun startBluetoothService() {
+
+            bluetoothService.connectBluetoothDevice()
+
+    }
+
+    fun stopBluetoothService() {
+      bluetoothService.disconnectBluetoothDevice()
+    }
 
 }

@@ -7,6 +7,8 @@
          <item name="colorOnSecondary">#FFedf5f3</item>
          <item name="colorSecondary">@color/orange</item>
          <item name="colorTertiaryContainer">#cde5ff</item>
+         <item name="colorOnTertiaryContainer">#001d32</item>
+
 
 
         <item name="android:statusBarColor">?attr/colorSurface</item>
