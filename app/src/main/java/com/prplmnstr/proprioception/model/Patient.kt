@@ -8,10 +8,10 @@ import com.prplmnstr.proprioception.utils.Constants.Companion.PATIENT_TABLE
 data class Patient(
     @PrimaryKey(autoGenerate = true)
     var id: Int?,
-    var imageId :String,
-    var name:String,
-    var age:String,
-    var gender:Int,
+    var imageId: String,
+    var name: String,
+    var age: String,
+    var gender: Int,
     var lastVisit: String,
-    var address : String
+    var address: String
 )

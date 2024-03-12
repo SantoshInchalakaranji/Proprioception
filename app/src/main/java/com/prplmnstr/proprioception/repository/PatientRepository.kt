@@ -21,5 +21,5 @@ class PatientRepository @Inject constructor(
     suspend fun addRecord(record: Record) = recordDao.insertRecord(record)
     suspend fun updateRecord(record: Record) = recordDao.updateRecord(record)
     suspend fun deleteRecord(record: Record) = recordDao.deleteRecord(record)
-     fun getPatientRecord(patientId:Int) = recordDao.getAllRecords(patientId)
+    fun getPatientRecord(patientId: Int) = recordDao.getAllRecords(patientId)
 }

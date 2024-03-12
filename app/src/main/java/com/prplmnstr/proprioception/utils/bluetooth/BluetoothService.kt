@@ -3,7 +3,6 @@ package com.prplmnstr.proprioception.utils.bluetooth
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Service
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.bluetooth.BluetoothSocket
@@ -36,7 +35,7 @@ class BluetoothService(
     }
     private lateinit var bluetoothSocket: BluetoothSocket
     private lateinit var inputStream: InputStream
-     var isBluetoothConnected: Boolean = false
+    var isBluetoothConnected: Boolean = false
     // LiveData to hold y value
 
     private val _connectionState = MutableLiveData<Boolean>().apply {
@@ -50,30 +49,31 @@ class BluetoothService(
     val yValue: LiveData<Double> = _yValue
 
 
-
     override fun onDestroy() {
         super.onDestroy()
         disconnectBluetoothDevice()
     }
 
     @SuppressLint("MissingPermission")
-     fun connectBluetoothDevice() {
+    fun connectBluetoothDevice() {
         if (!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
             Toast.makeText(context, "Please Enable Bluetooth Permissions. ", Toast.LENGTH_SHORT)
                 .show()
-             throw SecurityException("No BLUETOOTH_CONNECT permission")
+            throw SecurityException("No BLUETOOTH_CONNECT permission")
         }
-
 
 
         val bluetoothDevice: BluetoothDevice? = bluetoothAdapter!!.bondedDevices
             .find { it.name == "KLE6" } // Replace with your device name
 
         if (bluetoothDevice != null) {
-            Log.e("TAG", "${bluetoothDevice.address}", )
+            Log.e("TAG", "${bluetoothDevice.address}")
             try {
-                bluetoothSocket = bluetoothDevice.createRfcommSocketToServiceRecord(UUID.fromString(
-                    SERVICE_UUID))
+                bluetoothSocket = bluetoothDevice.createRfcommSocketToServiceRecord(
+                    UUID.fromString(
+                        SERVICE_UUID
+                    )
+                )
                 bluetoothSocket.connect()
                 inputStream = bluetoothSocket.inputStream
                 isBluetoothConnected = true
@@ -83,7 +83,7 @@ class BluetoothService(
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-        }else{
+        } else {
             Toast.makeText(context, "Device not found", Toast.LENGTH_SHORT)
                 .show()
         }
@@ -95,11 +95,11 @@ class BluetoothService(
                 try {
                     val data = inputStream.bufferedReader().readLine().toDouble()
                     _yValue.postValue(data)
-                    Log.e("TAG", "startReadingData   : $data", )
+                    Log.e("TAG", "startReadingData   : $data")
 
                 } catch (e: Exception) {
                     disconnectBluetoothDevice()
-                    Log.e("TAG", "startReadingData   : error", )
+                    Log.e("TAG", "startReadingData   : error")
                     e.printStackTrace()
                 }
 
@@ -118,7 +118,7 @@ class BluetoothService(
 
     }
 
-     fun disconnectBluetoothDevice() {
+    fun disconnectBluetoothDevice() {
         isBluetoothConnected = false
         _connectionState.postValue(false)
         try {

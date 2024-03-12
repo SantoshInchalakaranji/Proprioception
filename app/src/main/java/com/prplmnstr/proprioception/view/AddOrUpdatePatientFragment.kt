@@ -2,7 +2,6 @@ package com.prplmnstr.proprioception.view
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,11 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.activity.addCallback
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.prplmnstr.proprioception.R
 import com.prplmnstr.proprioception.databinding.FragmentAddOrUpdatePatientBinding
-import com.prplmnstr.proprioception.databinding.FragmentHomeBinding
 import com.prplmnstr.proprioception.utils.Constants
 import com.prplmnstr.proprioception.utils.Helper
 import com.prplmnstr.proprioception.utils.Helper.Companion.isLightTheme
@@ -33,11 +30,11 @@ class AddOrUpdatePatientFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        if(isLightTheme(requireContext())){
+    ): View {
+        if (isLightTheme(requireContext())) {
             activity?.window?.statusBarColor = requireContext().getColor(R.color.green)
 
-        }else{
+        } else {
             activity?.window?.statusBarColor = requireContext().getColor(R.color.green_dark)
         }
         binding = FragmentAddOrUpdatePatientBinding.inflate(inflater, container, false)
@@ -45,15 +42,16 @@ class AddOrUpdatePatientFragment : Fragment() {
         binding.lifecycleOwner = this
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
         val isNewPatient = mainViewModel.currentPatient.id == null
-        if(isNewPatient){
+        if (isNewPatient) {
             binding.customToolbar.title = "New Patient"
             binding.deleteButton.visibility = View.GONE
-        }else{
+        } else {
             binding.customToolbar.title = "Update Patient"
             binding.deleteButton.visibility = View.VISIBLE
         }
@@ -65,7 +63,7 @@ class AddOrUpdatePatientFragment : Fragment() {
             Constants.GENDER_LIST
         )
         spinnerAdapter!!.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.genderSpinner.setAdapter(spinnerAdapter)
+        binding.genderSpinner.adapter = spinnerAdapter
 
 
         binding.genderSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -77,17 +75,17 @@ class AddOrUpdatePatientFragment : Fragment() {
         }
 
         binding.doneImage.setOnClickListener {
-            if(isNewPatient){
-                if(mainViewModel.currentPatient.name.isEmpty()){
+            if (isNewPatient) {
+                if (mainViewModel.currentPatient.name.isEmpty()) {
                     binding.patientNameEt.error = "Please enter patient name"
-                }else{
+                } else {
                     mainViewModel.addPatient(mainViewModel.currentPatient)
                     findNavController().navigateUp()
                 }
-            }else{
-                if(mainViewModel.currentPatient.name.isEmpty()){
+            } else {
+                if (mainViewModel.currentPatient.name.isEmpty()) {
                     binding.patientNameEt.error = "Please enter patient name"
-                }else{
+                } else {
                     mainViewModel.updatePatient(mainViewModel.currentPatient)
                     findNavController().navigateUp()
                 }
@@ -95,7 +93,7 @@ class AddOrUpdatePatientFragment : Fragment() {
 
         }
 
-        binding.dateEditText.setOnClickListener{
+        binding.dateEditText.setOnClickListener {
             showDatePickerDialog(binding.dateEditText)
 
 
@@ -105,8 +103,6 @@ class AddOrUpdatePatientFragment : Fragment() {
             mainViewModel.deletePatient(mainViewModel.currentPatient)
             findNavController().navigateUp()
         }
-
-
 
 
         //on back press

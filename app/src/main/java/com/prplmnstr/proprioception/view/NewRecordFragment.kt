@@ -6,20 +6,19 @@ import android.bluetooth.BluetoothManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.prplmnstr.proprioception.R
 import com.prplmnstr.proprioception.databinding.FragmentNewRecordBinding
-import com.prplmnstr.proprioception.databinding.FragmentRecordBinding
 import com.prplmnstr.proprioception.utils.Constants
 import com.prplmnstr.proprioception.utils.Helper
 import com.prplmnstr.proprioception.utils.Helper.Companion.getFormattedDate
@@ -49,11 +48,11 @@ class NewRecordFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        if(Helper.isLightTheme(requireContext())){
+    ): View {
+        if (Helper.isLightTheme(requireContext())) {
             activity?.window?.statusBarColor = requireContext().getColor(R.color.green)
 
-        }else{
+        } else {
             activity?.window?.statusBarColor = requireContext().getColor(R.color.green_dark)
         }
         binding = FragmentNewRecordBinding.inflate(inflater, container, false)
@@ -67,10 +66,10 @@ class NewRecordFragment : Fragment() {
 
         requestPermission()
         binding.connectButton.setOnClickListener {
-            if(binding.connectButton.text.equals("Connect")){
+            if (binding.connectButton.text.equals("Connect")) {
                 Toast.makeText(context, "Connecting...", Toast.LENGTH_SHORT).show()
                 mainViewModel.startBluetoothService()
-            }else{
+            } else {
                 Toast.makeText(context, "Disconnected", Toast.LENGTH_SHORT).show()
                 mainViewModel.stopBluetoothService()
             }
@@ -79,28 +78,34 @@ class NewRecordFragment : Fragment() {
         binding.card1.strokeWidth = 3
 
         binding.recordButton.setOnClickListener {
-            if(binding.connectButton.text.equals("Connect")){
-                Toast.makeText(context, "Please connect to device before reading", Toast.LENGTH_SHORT).show()
+            if (binding.connectButton.text.equals("Connect")) {
+                Toast.makeText(
+                    context,
+                    "Please connect to device before reading",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
-            when(readingNumber){
-                ReadingNumber.FirstReading ->{
+            when (readingNumber) {
+                ReadingNumber.FirstReading -> {
                     binding.card1.strokeWidth = 0
                     binding.card2.strokeWidth = 3
                     binding.resetButton.isEnabled = true
                     readingNumber = ReadingNumber.SecondReading
                     mainViewModel.currentRecord.initialReading = readValue
-                    binding.reading1Text.text =  "$readValue °"
+                    binding.reading1Text.text = "$readValue °"
                 }
-                ReadingNumber.SecondReading ->{
+
+                ReadingNumber.SecondReading -> {
                     binding.card2.strokeWidth = 0
                     binding.card3.strokeWidth = 3
                     binding.resetButton.isEnabled = true
                     binding.recordButton.isEnabled = false
                     readingNumber = ReadingNumber.FirstReading
                     mainViewModel.currentRecord.finalReading = readValue
-                    binding.reading2Text.text =  "$readValue °"
-                    val difference = mainViewModel.currentRecord.initialReading - mainViewModel.currentRecord.finalReading
+                    binding.reading2Text.text = "$readValue °"
+                    val difference =
+                        mainViewModel.currentRecord.initialReading - mainViewModel.currentRecord.finalReading
                     binding.reading3Text.text = "${abs(difference)} °"
                 }
             }
@@ -113,10 +118,10 @@ class NewRecordFragment : Fragment() {
             binding.card1.strokeWidth = 3
             binding.recordButton.isEnabled = true
             binding.resetButton.isEnabled = false
-            binding.reading1Text.text =  "0 °"
-            binding.reading2Text.text =  "0 °"
-            binding.reading3Text.text =  "0 °"
-            readValue  = 0
+            binding.reading1Text.text = "0 °"
+            binding.reading2Text.text = "0 °"
+            binding.reading3Text.text = "0 °"
+            readValue = 0
             mainViewModel.currentRecord.initialReading = 0
             mainViewModel.currentRecord.finalReading = 0
         }
@@ -127,7 +132,7 @@ class NewRecordFragment : Fragment() {
         }
 
         binding.saveButton.setOnClickListener {
-            if(mainViewModel.currentRecord.jointType.isEmpty()){
+            if (mainViewModel.currentRecord.jointType.isEmpty()) {
                 Toast.makeText(context, "Please select joint type", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -135,14 +140,14 @@ class NewRecordFragment : Fragment() {
             mainViewModel.currentRecord.date = getFormattedDate()
             //remark - databinding
             mainViewModel.addRecord(mainViewModel.currentRecord)
-            if(!binding.connectButton.text.equals("Connect"))
-            mainViewModel.stopBluetoothService()
+            if (!binding.connectButton.text.equals("Connect"))
+                mainViewModel.stopBluetoothService()
             findNavController().navigateUp()
         }
 
 
         for (option in Constants.JOINT_TYPE) {
-            val chip =  layoutInflater.inflate(R.layout.chip_layout, null) as Chip
+            val chip = layoutInflater.inflate(R.layout.chip_layout, null) as Chip
             chip.text = option
             chip.isClickable = true
             chip.isCheckable = true
@@ -158,22 +163,32 @@ class NewRecordFragment : Fragment() {
 
 
 
-        mainViewModel.connectionState.observe(viewLifecycleOwner, Observer { state->
-            if(state){
+        mainViewModel.connectionState.observe(viewLifecycleOwner, Observer { state ->
+            if (state) {
                 Toast.makeText(context, "Connected", Toast.LENGTH_SHORT).show()
                 binding.connectButton.text = "Disconnect"
-                binding.connectButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.bluetooth_connected, 0, 0, 0)
+                binding.connectButton.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.bluetooth_connected,
+                    0,
+                    0,
+                    0
+                )
 
-            }else{
+            } else {
 
                 binding.connectButton.text = "Connect"
-                binding.connectButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.bluetooth_disabled, 0, 0, 0)
+                binding.connectButton.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.bluetooth_disabled,
+                    0,
+                    0,
+                    0
+                )
             }
         })
 
         mainViewModel.yValue.observe(viewLifecycleOwner, Observer {
             readValue = it.toInt()
-            val progress = (it*100)/360
+            val progress = (it * 100) / 360
             binding.progressBar.progress = progress.toInt()
             binding.progressText.text = "$readValue °"
         })
@@ -187,6 +202,7 @@ class NewRecordFragment : Fragment() {
         }
 
     }
+
     private fun requestPermission() {
         // Activity Result Launcher for enabling Bluetooth
         val enableBluetoothLauncher = registerForActivityResult(
@@ -237,7 +253,8 @@ class NewRecordFragment : Fragment() {
 
 
 }
-enum class ReadingNumber{
+
+enum class ReadingNumber {
     FirstReading,
     SecondReading,
 

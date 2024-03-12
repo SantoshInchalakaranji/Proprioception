@@ -9,7 +9,7 @@ import com.prplmnstr.proprioception.model.Record
 
 
 @Database(
-    entities = [ Patient::class, Record::class],
+    entities = [Patient::class, Record::class],
     version = 1,
     exportSchema = false
 )

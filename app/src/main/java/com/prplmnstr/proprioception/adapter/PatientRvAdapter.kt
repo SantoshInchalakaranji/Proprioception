@@ -11,8 +11,7 @@ import com.prplmnstr.proprioception.model.Patient
 class PatientRvAdapter(
     private val selectListener: (Patient) -> Unit,
     private val infoClickListener: (Patient) -> Unit
-):RecyclerView.Adapter<PatientRvAdapter.ViewHolder>()
-{
+) : RecyclerView.Adapter<PatientRvAdapter.ViewHolder>() {
 
     private val patients = ArrayList<Patient>()
 
@@ -28,7 +27,7 @@ class PatientRvAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(patients[position],selectListener,infoClickListener)
+        holder.bind(patients[position], selectListener, infoClickListener)
     }
 
     fun setList(items: List<Patient>) {
@@ -37,10 +36,15 @@ class PatientRvAdapter(
         notifyDataSetChanged()
 
     }
+
     inner class ViewHolder(val binding: PatientRvItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(patient: Patient, selectListener: (Patient) -> Unit,infoClickListener: (Patient) -> Unit) {
+        fun bind(
+            patient: Patient,
+            selectListener: (Patient) -> Unit,
+            infoClickListener: (Patient) -> Unit
+        ) {
             binding.nameTv.text = patient.name
             binding.ageTv.text = patient.age
             binding.dateTv.text = patient.lastVisit

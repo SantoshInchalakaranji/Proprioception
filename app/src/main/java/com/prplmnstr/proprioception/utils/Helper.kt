@@ -3,14 +3,12 @@ package com.prplmnstr.proprioception.utils
 import android.content.Context
 import android.content.res.Configuration
 import java.text.DateFormatSymbols
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class Helper {
     companion object {
-
 
 
         fun getDateInStringFormat(day: Int, month: Int, year: Int): String {
@@ -24,8 +22,9 @@ class Helper {
         }
 
 
-         fun isLightTheme(context: Context): Boolean {
-            val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        fun isLightTheme(context: Context): Boolean {
+            val currentNightMode =
+                context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             return currentNightMode == Configuration.UI_MODE_NIGHT_NO
         }
 

@@ -8,16 +8,15 @@ import androidx.room.Query
 import androidx.room.Update
 import com.prplmnstr.proprioception.model.Patient
 import com.prplmnstr.proprioception.utils.Constants
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PatientDao {
 
     @Insert
-    suspend fun insertPatient(patient: Patient):Long
+    suspend fun insertPatient(patient: Patient): Long
 
     @Update
-    suspend fun updatePatient(patient: Patient):Int
+    suspend fun updatePatient(patient: Patient): Int
 
     @Delete
     suspend fun deletePatient(patient: Patient): Int
