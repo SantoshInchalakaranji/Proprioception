@@ -79,6 +79,10 @@ class NewRecordFragment : Fragment() {
         binding.card1.strokeWidth = 3
 
         binding.recordButton.setOnClickListener {
+            if(binding.connectButton.text.equals("Connect")){
+                Toast.makeText(context, "Please connect to device before reading", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             when(readingNumber){
                 ReadingNumber.FirstReading ->{
                     binding.card1.strokeWidth = 0
@@ -131,6 +135,7 @@ class NewRecordFragment : Fragment() {
             mainViewModel.currentRecord.date = getFormattedDate()
             //remark - databinding
             mainViewModel.addRecord(mainViewModel.currentRecord)
+            if(!binding.connectButton.text.equals("Connect"))
             mainViewModel.stopBluetoothService()
             findNavController().navigateUp()
         }

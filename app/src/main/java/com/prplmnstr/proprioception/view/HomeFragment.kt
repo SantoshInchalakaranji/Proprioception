@@ -53,9 +53,12 @@ class HomeFragment : Fragment() {
     private fun loadPatients() {
        mainViewModel.patients.observe(viewLifecycleOwner, Observer { patientList->
            if(patientList.isNotEmpty()){
+               binding.noRecordImage.visibility = View.GONE
                binding.recycler.visibility = View.VISIBLE
+
            }else{
                binding.recycler.visibility = View.GONE
+               binding.noRecordImage.visibility = View.VISIBLE
            }
            patientRvAdapter.setList(patientList)
        })

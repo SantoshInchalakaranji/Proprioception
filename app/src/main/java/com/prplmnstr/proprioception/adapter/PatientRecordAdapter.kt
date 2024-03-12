@@ -72,6 +72,11 @@ class PatientRecordAdapter (
                }
                binding.hiddenLayout.visibility = hiddenItemsVisibility
            }
+
+            binding.deleteButton.setOnClickListener {
+                deleteClickListener(record)
+                notifyItemRemoved(records.indexOf(record))
+            }
         }
 
 

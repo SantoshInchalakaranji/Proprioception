@@ -81,7 +81,7 @@
                 android:drawableEnd="@drawable/expand_more"
                 android:drawablePadding="8dp"
                 android:fontFamily="@font/segeo_bold"
-                android:text="Joint type"
+                android:text="Filter"
 
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -111,6 +111,19 @@
         android:id="@+id/recycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expandable_card" />
+
+    <ImageView
+        android:id="@+id/no_record_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="64dp"
+        android:visibility="gone"
+        android:src="@drawable/no_record"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

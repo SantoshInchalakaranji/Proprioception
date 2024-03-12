@@ -35,6 +35,9 @@ class RecordFragment : Fragment() {
     private lateinit var binding: FragmentRecordBinding
     private lateinit var recordRvAdapter: PatientRecordAdapter
     private val mainViewModel: MainViewModel by activityViewModels()
+    private  var recordList : MutableList<Record> = mutableListOf()
+    private  var filterList : MutableList<Record> = mutableListOf()
+    private var filterChecked = false
 
 
     override fun onCreateView(
@@ -63,7 +66,7 @@ class RecordFragment : Fragment() {
         binding.toolbarText.text = "$patientName's Record"
 
         initializeRecycler()
-        loadRecords( )
+        loadRecords()
 
         binding.expandingLinearLayout.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         binding.expandTextview.setOnClickListener {
@@ -104,10 +107,13 @@ class RecordFragment : Fragment() {
 
             chip.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
-
+                   filterList.clear()
+                    filterList.addAll(mainViewModel.createFilterList( recordList, option))
+                    recordRvAdapter.setList(filterList)
                 }else{
-
+                    recordRvAdapter.setList(recordList)
                 }
+                filterChecked = isChecked
             }
 
             binding.chipGroup.addView(chip)
@@ -124,10 +130,18 @@ class RecordFragment : Fragment() {
     private fun loadRecords() {
         mainViewModel.getPatientRecord(mainViewModel.currentPatient.id!!).observe(viewLifecycleOwner, Observer { records->
             if(records.isNotEmpty()){
-                recordRvAdapter.setList(records)
-
+                recordList.clear()
+                recordList.addAll(records)
+                binding.noRecordImage.visibility = View.GONE
+                binding.recycler.visibility = View.VISIBLE
             }else{
-                // show no  record
+                binding.recycler.visibility = View.GONE
+                binding.noRecordImage.visibility = View.VISIBLE
+            }
+            if(filterChecked) {
+                recordRvAdapter.setList(filterList)
+            }else{
+                recordRvAdapter.setList(records)
             }
         })
     }
@@ -140,6 +154,10 @@ class RecordFragment : Fragment() {
     }
 
     private fun deletePatient(deletedRecord: Record) {
+        if(filterChecked){
+            filterList.remove(deletedRecord)
+        }
+        mainViewModel.deleteRecord(deletedRecord)
 
     }
 

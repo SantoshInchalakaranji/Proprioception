@@ -105,4 +105,17 @@ class MainViewModel @Inject constructor(
       bluetoothService.disconnectBluetoothDevice()
     }
 
+    fun createFilterList(recordList: MutableList<Record>, option: String): MutableList<Record> {
+        val filteredList = mutableListOf<Record>()
+
+        for (record in recordList) {
+            // Assuming you want to filter based on the jointType field
+            if (record.jointType == option) {
+                filteredList.add(record)
+            }
+        }
+
+        return filteredList
+    }
+
 }
