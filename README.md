@@ -27,6 +27,14 @@ The Proprioception Assessment and Treatment Device is a real-time solution desig
 - Bluetooth Module
 - Linear Actuators
 
+## Technologies Used
+
+- Kotlin: The Android application is developed using Kotlin, a modern programming language for Android development.
+- MVVM Architecture: Adopts the Model-View-ViewModel architectural pattern for a clear separation of concerns and improved testability.
+- Hilt for Dependency Injection: Utilizes Hilt, an official dependency injection library for Android, to facilitate dependency injection throughout the application.
+- Room for Local Storage: Implements Room, an SQLite object mapping library, to provide local storage capabilities for patient records.
+- Bluetooth Communication: Utilizes Bluetooth communication for seamless connectivity between the device and the Android application.
+
 ## Installation
 
 1. Clone this repository.
@@ -65,4 +73,9 @@ Contributions are welcome! Please fork this repository and create a pull request
 
 [![Demo Video](https://png.pngtree.com/png-vector/20190724/ourmid/pngtree-vector-play-icon-png-image_1572584.jpg)](https://drive.google.com/file/d/1TMpkJ9pATuEPy4eoLDZZhBF1qCw0s0bw/view?usp=sharing)
 
+
+
+Absolutely! Here's an updated version of the README with the additional technologies used:
+
+---
 
